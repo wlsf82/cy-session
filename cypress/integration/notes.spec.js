@@ -1,5 +1,8 @@
 describe('Notes App', () => {
-  beforeEach(() => cy.login())
+  beforeEach(() => {
+    cy.intercept('GET', '**/notes').as('getNotes')
+    cy.login()
+  })
 
   it('CRUDS a note', () => {
     const faker = require('faker')
@@ -9,6 +12,7 @@ describe('Notes App', () => {
 
     cy.get('#content').type(noteDescription)
     cy.contains('button', 'Create').click()
+    cy.wait('@getNotes')
 
     cy.contains('h1', 'Your Notes').should('be.visible')
     cy.contains('.list-group-item', noteDescription)
@@ -21,6 +25,7 @@ describe('Notes App', () => {
       .clear()
       .type(updatedNoteDescription)
     cy.contains('button', 'Save').click()
+    cy.wait('@getNotes')
 
     cy.contains('h1', 'Your Notes').should('be.visible')
     cy.contains('.list-group-item', noteDescription).should('not.exist')
@@ -28,6 +33,7 @@ describe('Notes App', () => {
       .should('be.visible')
       .click()
     cy.contains('button', 'Delete').click()
+    cy.wait('@getNotes')
 
     cy.contains('h1', 'Your Notes').should('be.visible')
     cy.contains('.list-group-item', updatedNoteDescription).should('not.exist')
@@ -54,6 +60,7 @@ describe('Notes App', () => {
       .find('[name="postal"]')
       .type('12345')
     cy.contains('button', 'Purchase').click()
+    cy.wait('@getNotes')
 
     cy.wait('@paymentRequest').then(response => {
       expect(response.state).to.equal('Complete')
