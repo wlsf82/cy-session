@@ -2,13 +2,16 @@ describe('Notes App', () => {
   beforeEach(() => {
     cy.intercept('GET', '**/notes').as('getNotes')
     cy.login()
+    cy.visit('/')
+    cy.wait('@getNotes')
   })
 
   it('CRUDs a note', () => {
     const faker = require('faker')
     const noteDescription = faker.lorem.words(4)
 
-    cy.visit('/notes/new')
+    // cy.visit('/notes/new')
+    cy.contains('.list-group-item', 'Create a new note').click()
 
     cy.get('#content').type(noteDescription)
     cy.contains('button', 'Create').click()
@@ -42,7 +45,8 @@ describe('Notes App', () => {
   it('successfully submits the settings form', () => {
     cy.intercept('POST', '**/prod/billing').as('paymentRequest')
 
-    cy.visit('/settings')
+    // cy.visit('/settings')
+    cy.contains('.navbar-right a', 'Settings').click()
 
     cy.get('#storage').type('1')
     cy.get('#name').type('Mary Doe')
@@ -68,8 +72,8 @@ describe('Notes App', () => {
   })
 
   it('logs out', () => {
-    cy.visit('/')
-    cy.wait('@getNotes')
+    // cy.visit('/')
+    // cy.wait('@getNotes')
 
     cy.contains('.navbar-right [href="#"]', 'Logout').click()
 
