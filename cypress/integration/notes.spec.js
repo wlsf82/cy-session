@@ -69,6 +69,7 @@ describe('Notes App', () => {
 
   it('logs out', () => {
     cy.visit('/')
+    cy.wait('@getNotes')
 
     cy.contains('.navbar-right [href="#"]', 'Logout').click()
 
