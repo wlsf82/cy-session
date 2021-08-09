@@ -4,7 +4,7 @@ describe('Notes App', () => {
     cy.login()
   })
 
-  it('CRUDS a note', () => {
+  it('CRUDs a note', () => {
     const faker = require('faker')
     const noteDescription = faker.lorem.words(4)
 

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Sample project to demonstrate the usage of Cypress' experimental feature cy.session().",
   "scripts": {
-    "cy": "cypress open",
+    "cy:open": "cypress open",
     "test": "cypress run"
   },
   "keywords": [],
